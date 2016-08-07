@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Seguro médico</title>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
     <script src="script.js"></script>
   </head>
   <body ng-controller="SeguroController">
@@ -29,7 +29,8 @@
         <legend>Coberturas</legend>
         <label for="oftalmologia">Oftalmología:</label><input id="oftalmologia" name="oftalmologia" type="checkbox" ng-model="seguro.coberturas.oftalmologia" /><br>
         <label for="dental">Dental:</label><input id="dental" name="dental" type="checkbox" ng-model="seguro.coberturas.dental" /><br>
-        <label for="fecundacionInVitro">Fecundación in vitro:</label><input id="fecundacionInVitro" name="fecundacionInVitro" type="checkbox" ng-model="seguro.coberturas.fecundacionInVitro" /><br>
+        <label ng-show="seguro.sexo==='M'" for="fecundacionInVitro">Fecundación in vitro:</label>
+        <input ng-show="seguro.sexo==='M'" id="fecundacionInVitro" name="fecundacionInVitro" type="checkbox" ng-model="seguro.coberturas.fecundacionInVitro" /><br>
       </fieldset>
       <fieldset>
         <legend>Enfermedades</legend>
@@ -37,7 +38,7 @@
         <label for="estomacal">Estomacal:</label><input id="estomacal" name="estomacal" type="checkbox" ng-model="seguro.enfermedades.estomacal" /><br>
         <label for="rinyones">Riñones:</label><input id="rinyones" name="rinyones" type="checkbox" ng-model="seguro.enfermedades.rinyones" /><br>
         <label for="alergia">Alergia:</label><input id="alergia" name="alergia" type="checkbox" ng-model="seguro.enfermedades.alergia" /><br>
-        <label for="nombreAlergia">Nombre de la alergia:</label><input id="nombreAlergia" name="nombreAlergia" type="text" ng-model="seguro.enfermedades.nombreAlergia" /><br>
+        <label for="nombreAlergia">Nombre de la alergia:</label><input ng-disabled="seguro.enfermedades.alergia===true" id="nombreAlergia" name="nombreAlergia" type="text" ng-model="seguro.enfermedades.nombreAlergia" /><br>
       </fieldset>
     </form>
   </body>
