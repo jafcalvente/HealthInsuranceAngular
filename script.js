@@ -1,6 +1,6 @@
-var app=angular.module("app", []);
+var app = angular.module("app", []);
 
-function SeguroController($scope) {
+app.controller("SeguroController", function($scope) {
   $scope.seguro = {
     nif:"",
     nombre:"",
@@ -24,4 +24,4 @@ function SeguroController($scope) {
     },
     fechaCreacion:new Date()
   }
-}
+});
