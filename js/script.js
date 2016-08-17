@@ -2,33 +2,42 @@ var app = angular.module("app", []);
 
 /**
  * Función que define la clase JavaScript encargada de realizar la petición AJAX que
- * recuperará los datos
+ * recuperará los datos haciendo uso de promesas
  */
-function RemoteResource($http, baseUrl) {
+function RemoteResource($http, $q, baseUrl) {
 
-  // Método público que acepta dos funciones como parámetros que actuarán como callbacks.
   // Permite recuperar la información de un seguro mediante una petición GET
-  this.get = function(fnOk, fnError) {
+  this.get = function() {
+    var defered = $q.defer();
+    var promise = defered.promise;
+
     $http({
       method: 'GET',
       url: baseUrl + '/datos.json'
     }).success(function(data, status, header, config) {
-      fnOk(data);
+      defered.resolve(data);
     }).error(function(data, status, header, config) {
-      fnError(data, status);
+      defered.reject(status);
     });
+
+    return promise;
   };
 
   // Método público que permite recuperar la lista de seguros mediante una petición GET
-  this.list = function(fnOk, fnError) {
+  this.list = function() {
+    var defered = $q.defer();
+    var promise = defered.promise;
+
     $http({
       method: 'GET',
       url: baseUrl + '/listado_seguros.json'
     }).success(function(data, status, header, config) {
-      fnOk(data);
+      defered.resolve(data);
     }).error(function(data, status, header, config) {
-      fnError(data, status);
+      defered.reject(status);
     });
+
+    return promise;
   };
 };
 
@@ -45,8 +54,8 @@ function RemoteResourceProvider() {
   };
 
   // Método '$get' que es el factory-provider. Define la función de factoría que hará la petición
-  this.$get = ['$http', function($http) {
-    return new RemoteResource($http, _baseUrl);
+  this.$get = ['$http', '$q', function($http, $q) {
+    return new RemoteResource($http, $q, _baseUrl);
   }];
 };
 
@@ -79,11 +88,12 @@ app.controller("ListadoSegurosController", ["$scope", "remoteResource", function
   $scope.seguros = [];
 
   // Usando el provider se invoca el método 'list' de la clase RemoteResource
-  remoteResource.list(
+  remoteResource.list().then(
     function(data) {
+      console.log("Promesa resuelta de manera satisfactoria: list");
       $scope.seguros = data;
     },
-    function(data, status) {
+    function(status) {
       console.error("Ha fallado la petición. Estado HTTP:" + status);
     }
   );
@@ -127,11 +137,13 @@ app.controller("DetalleSeguroController", ["$scope", "remoteResource", function(
   ];
 
   // Usando el provider se invoca el método 'get' de la clase RemoteResource
-  remoteResource.get(
+  remoteResource.get().then(
     function(data) {
+      console.log("Promesa resuelta de manera satisfactoria: get");
       $scope.seguro = data;
     },
-    function(data, status) {
+    function(status) {
       console.error("Ha fallado la petición. Estado HTTP: " + status);
-    });
+    }
+  );
 }]);
