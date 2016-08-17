@@ -7,6 +7,9 @@
     <script src="script.js"></script>
   </head>
   <body ng-controller="SeguroController">
+
+    <ng-include src="'header.html'"></ng-include>
+
     <form>
       <fieldset>
         <legend>Seguro Médico</legend>
@@ -15,10 +18,8 @@
         <label for="apellido">Apellido:</label><input id="ape1" name="ape1" type="text" ng-model="seguro.apellido" /><br>
         <label for="edad">Edad:</label><input id="edad" name="edad" type="text" ng-model="seguro.edad" /><br>
         <label for="sexo">Sexo:</label>
-        <select id="sexo" name="sexo" type="checkbox" ng-model="seguro.sexo" >
+        <select id="sexo" name="sexo" type="checkbox" ng-model="seguro.sexo" ng-options="sexo.codSexo as sexo.descripcion for sexo in sexos track by sexo.codSexo">
           <option value="">--Elige opción--</option>
-          <option value="H">Hombre</option>
-          <option value="M">Mujer</option>
         </select><br>
         <label for="casado">Casado:</label><input id="casado" name="casado" type="checkbox" ng-model="seguro.casado" /><br>
         <label for="numHijos">Nº hijos:</label><input id="numHijos" name="numHijos" type="text" ng-model="seguro.numHijos" /><br>
@@ -41,5 +42,8 @@
         <label for="nombreAlergia">Nombre de la alergia:</label><input ng-disabled="seguro.enfermedades.alergia===true" id="nombreAlergia" name="nombreAlergia" type="text" ng-model="seguro.enfermedades.nombreAlergia" /><br>
       </fieldset>
     </form>
+
+    <ng-include src="'footer.html'"></ng-include>
+
   </body>
 </html>

@@ -74,6 +74,20 @@ app.controller("SeguroController", ["$scope", "remoteResource", function($scope,
     fechaCreacion:new Date()
   };
 
+  // Definimos las opciones para la etiqueta 'select'
+  $scope.sexos = [
+    {
+      codSexo: "H",
+      descripcion: "Hombres"
+    },{
+      codSexo: "M",
+      descripcion: "Mujer"
+    }
+  ];
+
+  // Definimos la URL del logo
+  $scope.urlLogo = "logo.png";
+
   // Usando el provider se invoca el método 'get' de la clase RemoteResource
   remoteResource.get(
     function(data) {
