@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <title>Listado de seguros</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="js/script.js"></script>
+  </head>
+  <body ng-controller="ListadoSegurosController">
+
+    <ng-include src="'header.html'"></ng-include>
+
+    <table>
+      <thead>
+        <tr>
+          <th>NIF</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Sexo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="seguro in seguros" ng-style="{color: ($odd ? 'red' : 'green')}">
+          <td><a ng-href="./seguros/edit/{{seguro.nif}}">{{seguro.nif}}</a></td>
+          <td>{{seguro.nombre}}</td>
+          <td>{{seguro.apellido}}</td>
+          <td ng-switch on="seguro.sexo">
+            <span ng-switch-when="H">Hombre</span>
+            <span ng-switch-when="M">Mujer</span>
+            <span ng-switch-when=""></span>
+            <span ng-switch-default>Desconocido</span>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">El nº de seguros médicos es:</td>
+          <td ng-bind="seguros.length"></td>
+        </tr>
+      </tfoot>
+
+    </table>
+
+    <ng-include src="'footer.html'"></ng-include>
+
+  </body>
+</html>

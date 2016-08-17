@@ -6,11 +6,24 @@ var app = angular.module("app", []);
  */
 function RemoteResource($http, baseUrl) {
 
-  // Método público que acepta dos funciones como parámetros que actuarán como callbacks
+  // Método público que acepta dos funciones como parámetros que actuarán como callbacks.
+  // Permite recuperar la información de un seguro mediante una petición GET
   this.get = function(fnOk, fnError) {
     $http({
       method: 'GET',
       url: baseUrl + '/datos.json'
+    }).success(function(data, status, header, config) {
+      fnOk(data);
+    }).error(function(data, status, header, config) {
+      fnError(data, status);
+    });
+  };
+
+  // Método público que permite recuperar la lista de seguros mediante una petición GET
+  this.list = function(fnOk, fnError) {
+    $http({
+      method: 'GET',
+      url: baseUrl + '/listado_seguros.json'
     }).success(function(data, status, header, config) {
       fnOk(data);
     }).error(function(data, status, header, config) {
@@ -48,8 +61,36 @@ app.config(['baseUrl', 'remoteResourceProvider', function(baseUrl, remoteResourc
   remoteResourceProvider.setBaseUrl(baseUrl);
 }]);
 
-// Se define el controlador
-app.controller("SeguroController", ["$scope", "remoteResource", function($scope, remoteResource) {
+// URL donde estará el logo
+app.value("urlLogo", "img/logo.png");
+
+// Establecemos la URL del logo en el $rootScope para tenerlo disponible desde todas las páginas
+app.run(["$rootScope", "urlLogo", function($rootScope, urlLogo) {
+  $rootScope.urlLogo = urlLogo;
+}]);
+
+// Controlador para la página principal
+app.controller("MainController", ["$scope", function($scope) {
+
+}]);
+
+// Controlador para la página del listado
+app.controller("ListadoSegurosController", ["$scope", "remoteResource", function($scope, remoteResource) {
+  $scope.seguros = [];
+
+  // Usando el provider se invoca el método 'list' de la clase RemoteResource
+  remoteResource.list(
+    function(data) {
+      $scope.seguros = data;
+    },
+    function(data, status) {
+      console.error("Ha fallado la petición. Estado HTTP:" + status);
+    }
+  );
+}]);
+
+// Controlador para la página de detalles
+app.controller("DetalleSeguroController", ["$scope", "remoteResource", function($scope, remoteResource) {
   $scope.seguro = {
     nif:"",
     nombre:"",
@@ -78,15 +119,12 @@ app.controller("SeguroController", ["$scope", "remoteResource", function($scope,
   $scope.sexos = [
     {
       codSexo: "H",
-      descripcion: "Hombres"
+      descripcion: "Hombre"
     },{
       codSexo: "M",
       descripcion: "Mujer"
     }
   ];
-
-  // Definimos la URL del logo
-  $scope.urlLogo = "logo.png";
 
   // Usando el provider se invoca el método 'get' de la clase RemoteResource
   remoteResource.get(
