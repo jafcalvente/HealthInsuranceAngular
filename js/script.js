@@ -80,12 +80,24 @@ app.config(["$routeProvider", function($routeProvider) {
 
   $routeProvider.when('/seguro/listado', {
     templateUrl: "list.html",
-    controller: "ListadoSegurosController"
+    controller: "ListadoSegurosController",
+    resolve: {
+      // Recuperamos la lista de seguros antes de cargar la página
+      seguros: ["remoteResource", function(remoteResource) {
+        return remoteResource.list();
+      }]
+    }
   });
 
   $routeProvider.when('/seguro/edit/:idSeguro', {
     templateUrl: "detail.html",
-    controller: "DetalleSeguroController"
+    controller: "DetalleSeguroController",
+    resolve: {
+      // Recuperamos el detalle del seguro antes de cargar la página
+      seguro: ["remoteResource", "$route", function(remoteResource, $route) {
+        return remoteResource.get($route.current.params.idSeguro);
+      }]
+    }
   });
 
   $routeProvider.otherwise({
@@ -107,23 +119,12 @@ app.controller("MainController", ["$scope", function($scope) {
 }]);
 
 // Controlador para la página del listado
-app.controller("ListadoSegurosController", ["$scope", "remoteResource", function($scope, remoteResource) {
-  $scope.seguros = [];
-
-  // Usando el provider se invoca el método 'list' de la clase RemoteResource
-  remoteResource.list().then(
-    function(data) {
-      console.log("Promesa resuelta de manera satisfactoria: list");
-      $scope.seguros = data;
-    },
-    function(status) {
-      console.error("Ha fallado la petición. Estado HTTP:" + status);
-    }
-  );
+app.controller("ListadoSegurosController", ["$scope", "seguros", function($scope, seguros) {
+  $scope.seguros = seguros;
 }]);
 
 // Controlador para la página de detalles
-app.controller("DetalleSeguroController", ["$scope", "remoteResource", "$routeParams", function($scope, remoteResource, $routeParams) {
+app.controller("DetalleSeguroController", ["$scope", "seguro", function($scope, seguro) {
   $scope.seguro = {
     nif:"",
     nombre:"",
@@ -159,14 +160,5 @@ app.controller("DetalleSeguroController", ["$scope", "remoteResource", "$routePa
     }
   ];
 
-  // Usando el provider se invoca el método 'get' de la clase RemoteResource
-  remoteResource.get($routeParams.idSeguro).then(
-    function(data) {
-      console.log("Promesa resuelta de manera satisfactoria: get");
-      $scope.seguro = data;
-    },
-    function(status) {
-      console.error("Ha fallado la petición. Estado HTTP: " + status);
-    }
-  );
+  $scope.seguro = seguro;
 }]);
