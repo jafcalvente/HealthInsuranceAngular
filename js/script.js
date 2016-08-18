@@ -161,4 +161,13 @@ app.controller("DetalleSeguroController", ["$scope", "seguro", function($scope, 
   ];
 
   $scope.seguro = seguro;
+
+  // Simulación de funcionalidad de guardar
+  $scope.guardar = function() {
+    if ($scope.form.$valid) {
+      alert("Los datos aqui se habrían enviado al servidor y estarían validados en la parte cliente.");
+    }else {
+      alert("Hay datos inválidos.");
+    }
+  }
 }]);
