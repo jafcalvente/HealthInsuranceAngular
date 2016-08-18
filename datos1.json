@@ -1,0 +1,23 @@
+{
+  "idSeguro": 1,
+  "nif": "34783627Z",
+  "nombre": "Catalina",
+  "apellido": "López",
+  "edad": 33,
+  "sexo": "M",
+  "casado": true,
+  "numHijos": 1,
+  "embarazada": true,
+  "coberturas": {
+    "oftalmologia": false,
+    "dental": false,
+    "fecundacionInVitro": false
+  },
+  "enfermedades": {
+    "corazon": false,
+    "estomacal": false,
+    "rinyones": false,
+    "alergia": false,
+    "nombreAlergia": ""
+  }
+}

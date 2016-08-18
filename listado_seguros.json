@@ -1,4 +1,5 @@
 [{
+  "idSeguro": 0,
   "nif": "12345678Z",
   "nombre": "Carlos",
   "apellido": "Cano",
@@ -20,6 +21,7 @@
     "nombreAlergia": "Acaros"
   }
 }, {
+  "idSeguro": 1,
   "nif": "34783627Z",
   "nombre": "Catalina",
   "apellido": "López",
@@ -41,6 +43,7 @@
     "nombreAlergia": ""
   }
 }, {
+  "idSeguro": 2,
   "nif": "29069345J",
   "nombre": "Jose",
   "apellido": "Aguado",

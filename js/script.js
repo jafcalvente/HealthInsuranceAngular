@@ -1,4 +1,4 @@
-var app = angular.module("app", []);
+var app = angular.module("app", ["ngRoute"]);
 
 /**
  * Función que define la clase JavaScript encargada de realizar la petición AJAX que
@@ -7,13 +7,13 @@ var app = angular.module("app", []);
 function RemoteResource($http, $q, baseUrl) {
 
   // Permite recuperar la información de un seguro mediante una petición GET
-  this.get = function() {
+  this.get = function(idSeguro) {
     var defered = $q.defer();
     var promise = defered.promise;
 
     $http({
       method: 'GET',
-      url: baseUrl + '/datos.json'
+      url: baseUrl + '/datos' + idSeguro + '.json'
     }).success(function(data, status, header, config) {
       defered.resolve(data);
     }).error(function(data, status, header, config) {
@@ -70,6 +70,29 @@ app.config(['baseUrl', 'remoteResourceProvider', function(baseUrl, remoteResourc
   remoteResourceProvider.setBaseUrl(baseUrl);
 }]);
 
+// Definimos el enrutado
+app.config(["$routeProvider", function($routeProvider) {
+
+  $routeProvider.when('/', {
+    templateUrl: "main.html",
+    controller: "MainController"
+  });
+
+  $routeProvider.when('/seguro/listado', {
+    templateUrl: "list.html",
+    controller: "ListadoSegurosController"
+  });
+
+  $routeProvider.when('/seguro/edit/:idSeguro', {
+    templateUrl: "detail.html",
+    controller: "DetalleSeguroController"
+  });
+
+  $routeProvider.otherwise({
+    redirectTo: '/'
+  });
+}]);
+
 // URL donde estará el logo
 app.value("urlLogo", "img/logo.png");
 
@@ -100,7 +123,7 @@ app.controller("ListadoSegurosController", ["$scope", "remoteResource", function
 }]);
 
 // Controlador para la página de detalles
-app.controller("DetalleSeguroController", ["$scope", "remoteResource", function($scope, remoteResource) {
+app.controller("DetalleSeguroController", ["$scope", "remoteResource", "$routeParams", function($scope, remoteResource, $routeParams) {
   $scope.seguro = {
     nif:"",
     nombre:"",
@@ -137,7 +160,7 @@ app.controller("DetalleSeguroController", ["$scope", "remoteResource", function(
   ];
 
   // Usando el provider se invoca el método 'get' de la clase RemoteResource
-  remoteResource.get().then(
+  remoteResource.get($routeParams.idSeguro).then(
     function(data) {
       console.log("Promesa resuelta de manera satisfactoria: get");
       $scope.seguro = data;

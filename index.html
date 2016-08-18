@@ -4,15 +4,14 @@
     <meta charset="utf-8">
     <title>Seguro médico</title>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.min.js"></script>
     <script src="js/script.js"></script>
   </head>
   <body ng-controller="MainController">
 
     <ng-include src="'header.html'"></ng-include>
 
-    <a href="list.html">Listado de seguros médicos</a>
-    <br>
-    <a href="detail.html">Detalle de seguro médico</a>
+    <div ng-view></div>
 
     <ng-include src="'footer.html'"></ng-include>
 

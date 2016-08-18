@@ -1,0 +1,23 @@
+{
+  "idSeguro": 2,
+  "nif": "29069345J",
+  "nombre": "Jose",
+  "apellido": "Aguado",
+  "edad": 56,
+  "sexo": "H",
+  "casado": true,
+  "numHijos": 2,
+  "embarazada": false,
+  "coberturas": {
+    "oftalmologia": true,
+    "dental": true,
+    "fecundacionInVitro": false
+  },
+  "enfermedades": {
+    "corazon": true,
+    "estomacal": true,
+    "rinyones": true,
+    "alergia": false,
+    "nombreAlergia": ""
+  }
+}
