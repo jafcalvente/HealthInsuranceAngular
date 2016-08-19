@@ -171,3 +171,19 @@ app.controller("DetalleSeguroController", ["$scope", "seguro", function($scope, 
     }
   }
 }]);
+
+// Definición de la directiva que permite usar el widget de Datepicker de jQuery UI
+app.directive("jafDatepicker", [function(dateFormat) {
+  return {
+    restrict: 'A',
+    link: function($scope, element, attributes) {
+
+      element.datepicker({
+        dateFormat: attributes.jafDatepicker,
+        onSelect: function() {
+          $(this).trigger('change');
+        }
+      });
+    }
+  };
+}])
